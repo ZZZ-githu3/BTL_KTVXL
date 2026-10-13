@@ -1,0 +1,19 @@
+# Thư mục đầu ra của KeilC
+Objects/
+Listings/
+DebugConfig/
+
+# Các file tạm và file rác sinh ra khi Build
+*.o
+*.d
+*.crf
+*.axf
+*.map
+*.htm
+*.sct
+*.dep
+*.lnp
+*.build_log.htm
+
+# File cấu hình giao diện người dùng (không cần thiết để chung)
+*.uvguix.*
