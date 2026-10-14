@@ -3,9 +3,9 @@
 
 #include "stm32f10x.h"
 
-#define INA226_ADDR 0x40 // Ð?a ch? I2C c?a INA226
+#define INA226_ADDR 0x40
 
-// Các thanh ghi co b?n c?a INA226
+// CÃ¡c thanh ghi co b?n c?a INA226
 #define INA226_REG_CONFIG      0x00
 #define INA226_REG_SHUNTVOLT   0x01
 #define INA226_REG_BUSVOLT     0x02
