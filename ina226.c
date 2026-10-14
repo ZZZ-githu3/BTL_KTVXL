@@ -1,6 +1,5 @@
 #include "ina226.h"
 
-// C?u hình I2C1 ph?n c?ng (Chân PB6: SCL, PB7: SDA)
 static void INA226_I2C_Config(void) {
     GPIO_InitTypeDef GPIO_InitStructure;
     I2C_InitTypeDef I2C_InitStructure;
@@ -8,7 +7,7 @@ static void INA226_I2C_Config(void) {
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO, ENABLE);
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
 
-    // Chân SCL (PB6) và SDA (PB7) ki?u Alternate Function Open-Drain
+    // ChÃ¢n SCL (PB6) vÃ  SDA (PB7) ki?u Alternate Function Open-Drain
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
@@ -25,7 +24,6 @@ static void INA226_I2C_Config(void) {
     I2C_Init(I2C1, &I2C_InitStructure);
 }
 
-// Hàm ghi d? li?u vào thanh ghi INA226
 void INA226_WriteReg(uint8_t reg, uint16_t val) {
     while(I2C_GetFlagStatus(I2C1, I2C_FLAG_BUSY));
 
@@ -47,7 +45,6 @@ void INA226_WriteReg(uint8_t reg, uint16_t val) {
     I2C_GenerateSTOP(I2C1, ENABLE);
 }
 
-// Hàm d?c d? li?u t? thanh ghi INA226
 uint16_t INA226_ReadReg(uint8_t reg) {
     uint8_t msb, lsb;
     while(I2C_GetFlagStatus(I2C1, I2C_FLAG_BUSY));
@@ -83,17 +80,15 @@ uint16_t INA226_ReadReg(uint8_t reg) {
 
 void INA226_Init(void) {
     INA226_I2C_Config();
-    INA226_WriteReg(INA226_REG_CONFIG, 0x4127);      // C?u hình m?u do
-    INA226_WriteReg(INA226_REG_CALIBRATION, 0x0A00); // H? s? hi?u chu?n dòng di?n
+    INA226_WriteReg(INA226_REG_CONFIG, 0x4127);
+    INA226_WriteReg(INA226_REG_CALIBRATION, 0x0A00);
 }
 
-// L?y di?n áp ngõ vào (Bus Voltage) tính b?ng Volt
 float INA226_GetBusVoltage_V(void) {
     uint16_t val = INA226_ReadReg(INA226_REG_BUSVOLT);
     return (float)val * 0.00125f; // 1 LSB = 1.25mV
 }
 
-// L?y dòng di?n tính b?ng mA
 float INA226_GetCurrent_mA(void) {
     int16_t val = (int16_t)INA226_ReadReg(INA226_REG_CURRENT);
     return (float)val * 1.0f;
